@@ -24,7 +24,7 @@
 
 <table class="tasks">
     <?php foreach($tasks as $key => $task): ?>
-        <tr class="tasks__item task <?php if ($task["ready"] === "Да"): ?>task--completed <?php endif; ?><?=add_class($show_complete_tasks, $task["ready"]); ?>">
+        <tr class="tasks__item task <?=check_deadline($task["data"]); ?><?php if ($task["ready"] === "Да"): ?> task--completed <?php endif; ?><?=add_class($show_complete_tasks, $task["ready"]); ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1" <?php if ($task["ready"] === "Да"): ?>checked<?php endif; ?>>
