@@ -38,10 +38,10 @@
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <?php foreach($categories as $value): ?>
+                        <?php foreach($projects as $project): ?>
                             <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="#"><?=$value;?></a>
-                                <span class="main-navigation__list-item-count"><?=countTasks($tasks, $value); ?></span>
+                                <a class="main-navigation__list-item-link" href="#"><?=$project["project"];?></a>
+                                <span class="main-navigation__list-item-count"><?=$project["count_tasks"]; ?></span>
                             </li>
                         <?php endforeach; ?>
                     </ul>
