@@ -24,15 +24,15 @@
 
 <table class="tasks">
     <?php foreach($tasks as $key => $task): ?>
-        <tr class="tasks__item task <?=check_deadline($task["data"]); ?><?php if ($task["ready"] === "Да"): ?> task--completed <?php endif; ?><?=add_class($show_complete_tasks, $task["ready"]); ?>">
+        <tr class="tasks__item task <?=check_deadline($task["deadline"]); ?><?php if ($task["status_task"] === "1"): ?> task--completed <?php endif; ?><?=add_class($show_complete_tasks, $task["status_task"]); ?>">
             <td class="task__select">
                 <label class="checkbox task__checkbox">
-                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1" <?php if ($task["ready"] === "Да"): ?>checked<?php endif; ?>>
-                    <span class="checkbox__text"><?=htmlspecialchars($task["problem"]);?></span>
+                    <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1" <?php if ($task["status_task"] === "1"): ?>checked<?php endif; ?>>
+                    <span class="checkbox__text"><?=htmlspecialchars($task["title"]);?></span>
                 </label>
             </td>
-            <td class="task__category"><?=htmlspecialchars($task["category"]);?></td>
-            <td class="task__date"><?=$task["data"];?></td>
+            <td class="task__category"><?=htmlspecialchars($task["project"]);?></td>
+            <td class="task__date"><?=$task["deadline"] ;?></td>
         </tr>
     <?php endforeach; ?>
 </table>
