@@ -33,14 +33,30 @@ if ($connect == false) {
 }
 else {
     $sql_tasks = "SELECT t.title, t.status_task, t.deadline, p.project FROM tasks t LEFT JOIN projects p ON p.project_id = t.project_id WHERE t.user_id = 3";
-    $sql_projects = "SELECT p.project, count(t.id) AS count_tasks FROM projects p LEFT JOIN tasks t ON p.project_id = t.project_id WHERE p.user_id = 3 GROUP BY p.project_id;";
+    $sql_projects = "SELECT p.project_id, p.project, count(t.id) AS count_tasks FROM projects p LEFT JOIN tasks t ON p.project_id = t.project_id WHERE p.user_id = 3 GROUP BY p.project_id;";
     $result_projects = mysqli_query($connect, $sql_projects);
     $result_tasks = mysqli_query($connect, $sql_tasks);
     check_error($result_projects);
     check_error($result_tasks);
     $projects = mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
     $tasks = mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
+}
 
+//запросы
+$project_id = "";
+if (isset($_GET["project_id"])) {
+    $project_id = $_GET["project_id"];
+    $user_id = 3;
+    $sql_project_id = "SELECT t.title, t.status_task, t.deadline, p.project FROM tasks t JOIN projects p ON p.project_id = t.project_id WHERE t.project_id = '$project_id' AND t.user_id = '$user_id'";
+    $result_project_id = mysqli_query($connect, $sql_project_id);
+    check_error($result_project_id);
+    $tasks = mysqli_fetch_all($result_project_id, MYSQLI_ASSOC);
+    //проверка массива
+    if (empty($tasks)) {
+        http_response_code(404);
+        header("HTTP/1.0 404 not found");
+        exit();
+    }
 }
 
 //скрываем выполненное
@@ -63,6 +79,7 @@ function add_class($show_complete_tasks, $get_ready) {
 //}
 //считаем даты
 function check_deadline($task_data) {
+    $new_class = "";
     if ($task_data !== "NULL") {
         $today = time();
         $date = date_parse_from_format("Y-m-d", $task_data);
@@ -77,7 +94,7 @@ function check_deadline($task_data) {
 
 $page_content = include_template("index.php", ["tasks" => $tasks, "show_complete_tasks" => $show_complete_tasks]);
 
-$layout_content = include_template("layout.php", ["content" => $page_content, "title" => "Дела в порядке", "projects" => $projects, "tasks" => $tasks] );
+$layout_content = include_template("layout.php", ["content" => $page_content, "title" => "Дела в порядке", "projects" => $projects, "tasks" => $tasks, "project_id" => $project_id]);
 print($layout_content);
 
 ?>
